@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text, View,} from 'react-native';
+import { FlatList, StyleSheet, Text, View, Alert, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import AddTodo from './components/AddTodo';
 import Header from './components/Header';
 import TodoItem from './components/TodoItem';
@@ -11,40 +10,45 @@ export default function App() {
     { text: 'create an app', key: '2' },
     { text: 'play on the switch', key: '3' }
   ]);
-
   const handleDelete = (key) => {
   setTodos((prevTodos) => {
     return prevTodos.filter(todo => todo.key != key)
   })
   }
-
   const submitHandler = (text) => {
-    setTodos((prevTodos) => {
-      return [
-        {text: text, key: Math.random().toString()},
-        ...prevTodos
-      ]
-    })
-    
+    if(text.length > 3) {
+      setTodos((prevTodos) => {
+        return [
+          {text: text, key: Math.random().toString()},
+          ...prevTodos
+        ]
+      })
+    } else {
+Alert.alert('OOPS!', 'todos must be over three chars long', [
+  {text: 'understood', onPress: () => console.log('alert closed')}
+])
+    }
   }
- 
   return (
-    <View style={styles.container}>
-      {/* header */}
-      <Header />
-      <View style={styles.content}>
-        {/* to form */}
-        <AddTodo submitHandler={submitHandler} />
-        <View style={styles.list}>
-          <FlatList
-            data={todos}
-            renderItem={({ item }) => (
-              <TodoItem  item={item} handleDelete={handleDelete} />
-            )}
-           />
+    <TouchableWithoutFeedback onPress={() => {
+      Keyboard.dismiss();
+      console.log('keyboard dismissed')
+    }}>
+      <View style={styles.container}>
+        <Header />
+        <View style={styles.content}>
+          <AddTodo submitHandler={submitHandler} />
+          <View style={styles.list}>
+            <FlatList
+              data={todos}
+              renderItem={({ item }) => (
+                <TodoItem  item={item} handleDelete={handleDelete} />
+              )}
+            />
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
