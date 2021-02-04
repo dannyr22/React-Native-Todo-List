@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text, View, Alert, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import AddTodo from './components/AddTodo';
 import Header from './components/Header';
+import Sandbox from './components/Sandbox';
 import TodoItem from './components/TodoItem';
 
 export default function App() {
@@ -30,6 +31,7 @@ Alert.alert('OOPS!', 'todos must be over three chars long', [
     }
   }
   return (
+    // <Sandbox />
     <TouchableWithoutFeedback onPress={() => {
       Keyboard.dismiss();
       console.log('keyboard dismissed')
@@ -58,9 +60,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
   content: {
+    flex: 1,
     padding: 40,
   },
   list: {
+    flex: 1,
     marginTop: 20,
   },
 });
